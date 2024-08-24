@@ -1,4 +1,4 @@
-import { Post } from "@/types/Post";
+import { Post } from "$/types/Post";
 import Link from "next/link";
 
 type Props = {

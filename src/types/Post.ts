@@ -10,3 +10,7 @@ export type Post = {
   views: number;
   userId: number;
 };
+
+export type FullPost = Post & {
+  image: string;
+};

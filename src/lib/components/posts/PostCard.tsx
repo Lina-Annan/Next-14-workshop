@@ -1,8 +1,8 @@
-import { Post } from "@prisma/client";
+import { Post, Tag } from "@prisma/client";
 import Link from "next/link";
 
 type Props = {
-  post: Post;
+  post: Post & { tags: Tag[] };
   level: number;
 };
 
@@ -24,13 +24,13 @@ export const PostCard = ({ post, level }: Props) => {
       <h2 className="text-lg font-bold text-pretty line-clamp-2 leading-5 text-ellipsis h-10">
         <Link href={`/level-${level}/${post.id}`}>{post.title}</Link>
       </h2>
-      {/* <div className="space-x-2">
+      <div className="space-x-2">
         {post.tags.map((tag) => (
           <span className="text-green-700 capitalize bg-green-400/15 rounded-xl py-1 px-2 mb-1 w-fit text-xs ">
-            {tag}
+            {tag.name}
           </span>
         ))}
-      </div> */}
+      </div>
       <p className="line-clamp-3 text-ellipsis leading-5">{post.content}</p>
     </div>
   );

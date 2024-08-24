@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 
 import { seedPosts } from "./seeds/posts";
+import { seedTags } from "./seeds/tags";
 
 const prisma = new PrismaClient();
 
@@ -31,7 +32,17 @@ async function main() {
 
   const userIds = Array.from({ length: 20 }, (_, index) => index + 1);
 
-  await seedPosts(prisma, { length: 200, authorIds: userIds });
+  await seedTags(prisma);
+
+  const tagIds = (await prisma.tag.findMany({ select: { id: true } })).map(
+    (tag) => tag.id
+  );
+
+  await seedPosts(prisma, {
+    length: 200,
+    authorIds: userIds,
+    tagIds: tagIds.map((tagId) => tagId),
+  });
 }
 
 main()

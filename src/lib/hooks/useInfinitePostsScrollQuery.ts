@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import useInfiniteScrollQuery from "./useInfiniteScrollQuery";
 import useMemoizedDebounce from "./useMemoizedDebounce";
-import type { Post } from "@prisma/client";
+import type { Post, Tag } from "@prisma/client";
 
 export const GET_POSTS_LIMIT = 10;
 
@@ -27,7 +27,10 @@ export default function useInfinitePostsScrollQuery() {
       const url = `/api/posts?${searchParams.toString()}`;
 
       const res = await fetch(url);
-      const data = (await res.json()) as { posts: Post[]; total: number };
+      const data = (await res.json()) as {
+        posts: (Post & { tags: Tag[] })[];
+        total: number;
+      };
       return data;
     },
     initialPageParam: 0,

@@ -9,10 +9,17 @@ export async function GET(request: NextRequest) {
   const limit = parseInt(searchParams.limit) || 10;
   const skip = parseInt(searchParams.skip) || 0;
 
-  const findManyArgs: Prisma.PostFindManyArgs = {
+  const findManyArgs = {
     skip,
+    where: {},
     take: limit,
-  };
+    orderBy: {
+      createdAt: "desc",
+    },
+    include: {
+      tags: true,
+    },
+  } satisfies Prisma.PostFindManyArgs;
 
   if (searchParams.search) {
     findManyArgs.where = {

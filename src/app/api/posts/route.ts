@@ -1,4 +1,5 @@
 import prisma from "$/lib/clients/prisma";
+import { faker } from "@faker-js/faker";
 import { Prisma } from "@prisma/client";
 import { NextResponse, type NextRequest } from "next/server";
 

@@ -1,8 +1,9 @@
-import * as Dialog from "@radix-ui/react-dialog";
-import { PropsWithChildren, useEffect } from "react";
+"use client";
 
-import ModalHeader, { ModalHeaderProps } from "./modal-header";
-import { cn } from "@/lib/functions/cn";
+import * as Dialog from "@radix-ui/react-dialog";
+import { PropsWithChildren } from "react";
+
+import { cn } from "$/lib/functions/cn";
 
 export type ModalVariants = "regular" | "delete" | "custom" | "max";
 
@@ -24,9 +25,7 @@ type ModalProps = BaseModalProps &
   // If custom confirm component is provided, onConfirm should not be provided
   (| { footer?: React.ReactNode; onConfirm?: never }
     | { footer?: never; onConfirm?: () => void }
-  ) &
-  // If header size is large, children and headerChildren should not be provided
-  ({ size?: "large"; headerChildren?: never } | { size?: "small" });
+  );
 
 const Modal: React.FC<PropsWithChildren<ModalProps>> = ({
   title,
@@ -37,22 +36,11 @@ const Modal: React.FC<PropsWithChildren<ModalProps>> = ({
   headerChildren,
   headerClassName,
   childrenClassName,
-  size,
   variant = "regular",
   isLoading,
   onModalClose,
   onModalChange,
 }) => {
-  useEffect(() => {
-    if (isOpen) {
-      document.body.setAttribute("data-dnd-disabled", "true");
-
-      return () => {
-        document.body.removeAttribute("data-dnd-disabled");
-      };
-    }
-  }, [isOpen]);
-
   return (
     <Dialog.Root
       open={isOpen}
@@ -81,7 +69,6 @@ const Modal: React.FC<PropsWithChildren<ModalProps>> = ({
             <ModalHeader
               title={title}
               icon={icon}
-              size={size}
               className={headerClassName}
               onClose={() => {
                 if (!isLoading) {
@@ -103,5 +90,50 @@ const Modal: React.FC<PropsWithChildren<ModalProps>> = ({
     </Dialog.Root>
   );
 };
+
+type ModalHeaderProps = {
+  title: string;
+  icon?: React.ReactNode;
+  className?: string;
+  onClose: () => void;
+};
+function ModalHeader({
+  title,
+  icon,
+  children,
+  className,
+  onClose,
+}: PropsWithChildren<ModalHeaderProps>) {
+  return (
+    <div className="flex items-center justify-between py-6 px-4 border-b border-b-white-active relative">
+      <div className="flex flex-row items-center gap-2">
+        {icon && (
+          <div className="flex items-center justify-center p-2 bg-green-200 rounded">
+            <div className="absolute flex items-center justify-center">
+              {icon}
+            </div>
+          </div>
+        )}
+
+        <div className={cn("flex flex-row items-center gap-2", className)}>
+          <p className="text-center text-lg font-semibold text-primary-dark">
+            {title}
+          </p>
+          {children}
+        </div>
+      </div>
+
+      <button
+        aria-label="Close"
+        className={
+          "p-1 h-10 w-10 hover:bg-green-300 bg-green-200 rounded-full transition-colors duration-200 ease-in-out font-extrabold text-green-800 hover:text-white"
+        }
+        onClick={onClose}
+      >
+        X
+      </button>
+    </div>
+  );
+}
 
 export default Modal;

@@ -3,6 +3,7 @@ import { Inter, Roboto } from "next/font/google";
 import "./globals.css";
 import QueryClientProvider from "$/lib/providers/QueryClientProvider";
 import { PropsWithChildren } from "react";
+import Footer from "$/lib/components/common/Footer";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -28,6 +29,7 @@ export default function RootLayout({
         <body className={inter.className}>
           {children}
           {modal}
+          <Footer />
         </body>
       </QueryClientProvider>
     </html>

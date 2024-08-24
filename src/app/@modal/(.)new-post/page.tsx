@@ -9,7 +9,6 @@ export default function NewPostModal() {
 
   return (
     <Modal title="Add a new post" isOpen onModalClose={router.back}>
-      Intercepted
       <CreatePostForm />
     </Modal>
   );

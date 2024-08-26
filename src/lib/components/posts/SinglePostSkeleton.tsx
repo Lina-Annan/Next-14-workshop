@@ -17,6 +17,16 @@ export default function SinglePostSkeleton() {
         <div className="bg-slate-300/60 h-6 w-10/12 rounded-2xl"></div>
         <div className="bg-slate-300/60 h-6 w-full rounded-2xl"></div>
         <div className="bg-slate-300/60 h-6 w-3/5 rounded-2xl"></div>
+        <div className="bg-slate-300/60 h-6 w-full rounded-2xl"></div>
+        <div className="bg-slate-300/60 h-6 w-4/5 rounded-2xl"></div>
+        <div className="bg-slate-300/60 h-6 w-10/12 rounded-2xl"></div>
+        <div className="bg-slate-300/60 h-6 w-full rounded-2xl"></div>
+        <div className="bg-slate-300/60 h-6 w-3/5 rounded-2xl"></div>
+        <div className="bg-slate-300/60 h-6 w-full rounded-2xl"></div>
+        <div className="bg-slate-300/60 h-6 w-4/5 rounded-2xl"></div>
+        <div className="bg-slate-300/60 h-6 w-10/12 rounded-2xl"></div>
+        <div className="bg-slate-300/60 h-6 w-full rounded-2xl"></div>
+        <div className="bg-slate-300/60 h-6 w-3/5 rounded-2xl"></div>
       </div>
     </main>
   );

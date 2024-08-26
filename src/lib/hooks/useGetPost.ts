@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getPost } from "../api/post";
+import { Post, Tag } from "@prisma/client";
 
 type Props = {
   id: number;
@@ -7,8 +7,11 @@ type Props = {
 
 export default function useGetPost({ id }: Props) {
   const { data, isPending } = useQuery({
-    queryKey: ["posts"],
-    queryFn: () => getPost(id),
+    queryKey: ["posts", id],
+    queryFn: () =>
+      fetch(`/api/posts/${id}`).then((res) => res.json()) as Promise<
+        Post & { tags: Tag[] }
+      >,
   });
 
   return {

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import SearchInput from "./SearchInput";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { cn } from "../functions/cn";
+import { cn } from "../utils/cn";
 
 type Props = {
   handleSetSearchText: (text: string) => void;

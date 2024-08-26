@@ -1,36 +1,22 @@
-"use client";
+import PostsContainer from "$/lib/components/posts/PostsContainer";
+import PostsHeader from "$/lib/components/posts/PostsHeader";
+import PostsProvider from "$/lib/providers/PostsProvider";
+import { getPosts } from "$/lib/utils/api";
 
-import Header from "$/lib/components/Header";
-import { PostCard } from "$/lib/components/posts/PostCard";
-import PostCardSkeleton from "$/lib/components/posts/PostCardSkeleton";
-import useInfinitePostsScrollQuery from "$/lib/hooks/useInfinitePostsScrollQuery";
-import Link from "next/link";
+type Props = {
+  searchParams?: { [key: string]: string | string[] | undefined };
+};
 
-export default function Level1PostsPage() {
-  const { posts, isFetching, handleSetSearchText } =
-    useInfinitePostsScrollQuery();
+export default async function Level1PostsPage({ searchParams }: Props) {
+  let search = searchParams?.search;
+  if (typeof search !== "string") search = "";
 
-  if (!posts.length && !isFetching) {
-    return <div>No data</div>;
-  }
+  const posts = await getPosts({ search, page: 0 });
 
   return (
-    <>
-      <Header handleSetSearchText={handleSetSearchText} />
-
-      <nav>
-        <Link href="/new-post">Open modal</Link>
-      </nav>
-
-      <div className="grid grid-cols-4 gap-3 p-8">
-        {posts.map((post) => (
-          <PostCard key={post.id} post={post} level={1} />
-        ))}
-        {isFetching &&
-          Array.from({
-            length: posts.length ? (posts.length % 4) + 4 : 12,
-          }).map((_, index) => <PostCardSkeleton key={index} />)}
-      </div>
-    </>
+    <PostsProvider>
+      <PostsHeader />
+      <PostsContainer />
+    </PostsProvider>
   );
 }

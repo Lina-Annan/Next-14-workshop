@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "$/lib/functions/cn";
+import { cn } from "$/lib/utils/cn";
 import { usePosts } from "$/lib/providers/PostsProvider";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

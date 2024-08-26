@@ -5,6 +5,7 @@ import { createContext, PropsWithChildren, useContext, useMemo } from "react";
 import useInfiniteScrollQuery from "../hooks/useInfiniteScrollQuery";
 import useMemoizedDebounce from "../hooks/useMemoizedDebounce";
 import useEnhancedSearchParams from "../hooks/useEnhancedSearchParams";
+import { GET_POSTS_LIMIT, getPosts } from "../utils/api";
 
 export type PostsContextType = {
   posts: (Post & { tags: Tag[] })[];
@@ -13,11 +14,17 @@ export type PostsContextType = {
   handleSetSearch: (text: string) => void;
 };
 
-const GET_POSTS_LIMIT = 10;
-
 const PostsContext = createContext<PostsContextType | undefined>(undefined);
 
-export default function PostsProvider({ children }: PropsWithChildren) {
+type Props = {
+  initialPosts?: (Post & { tags: Tag[] })[];
+  initialPages?: number[];
+};
+
+export default function PostsProvider({
+  initialPosts,
+  children,
+}: PropsWithChildren<Props>) {
   const [{ search = "" }, setEnhancedSearchParams] = useEnhancedSearchParams<{
     search?: string;
   }>();
@@ -26,25 +33,8 @@ export default function PostsProvider({ children }: PropsWithChildren) {
 
   const { data, isFetching } = useInfiniteScrollQuery({
     queryKey: ["posts", debouncedSearch],
-    queryFn: async ({ pageParam }) => {
-      const searchParams = new URLSearchParams();
-      searchParams.append("limit", GET_POSTS_LIMIT.toString());
-      searchParams.append("skip", (pageParam ?? 0).toString());
-
-      if (debouncedSearch) {
-        searchParams.append("search", debouncedSearch);
-      }
-
-      const url = `/api/posts?${searchParams.toString()}`;
-
-      const res = await fetch(url);
-      const data = (await res.json()) as {
-        posts: (Post & { tags: Tag[] })[];
-        total: number;
-      };
-
-      return data;
-    },
+    queryFn: async ({ pageParam }) =>
+      getPosts({ search: debouncedSearch, page: pageParam }),
     initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) => {
       const newSkip = allPages.length * GET_POSTS_LIMIT;

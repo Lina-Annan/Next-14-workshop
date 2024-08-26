@@ -3,7 +3,7 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { PropsWithChildren } from "react";
 
-import { cn } from "$/lib/functions/cn";
+import { cn } from "$/lib/utils/cn";
 
 export type ModalVariants = "regular" | "delete" | "custom" | "max";
 

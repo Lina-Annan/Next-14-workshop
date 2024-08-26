@@ -28,9 +28,13 @@ export async function getPosts({
 
   return data;
 }
-
 export function getPost(id: number) {
-  return fetch(`/api/posts/${id}`).then((res) => res.json()) as Promise<
-    Post & { tags: Tag[] }
-  >;
+  const url = `${BASE_API_URL}/api/posts/${id}`;
+  console.log("Fetching post from URL:", url);
+  return fetch(url).then((res) => {
+    if (!res.ok) {
+      throw new Error(`Failed to fetch post with id ${id}: ${res.statusText}`);
+    }
+    return res.json();
+  }) as Promise<Post & { tags: Tag[] }>;
 }

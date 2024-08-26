@@ -3,7 +3,7 @@
 import SinglePost from "$/lib/components/posts/SinglePost";
 import SinglePostSkeleton from "$/lib/components/posts/SinglePostSkeleton";
 import useGetPost from "$/lib/hooks/useGetPost";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 
 export default function PostPage0() {
   const { id } = useParams();

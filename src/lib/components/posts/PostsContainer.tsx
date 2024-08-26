@@ -5,7 +5,9 @@ import PostCardSkeleton from "$/lib/components/posts/PostCardSkeleton";
 import { usePosts } from "$/lib/providers/PostsProvider";
 import NoPosts from "./NoPosts";
 
-export default function PostsContainer() {
+type Props = { level: number };
+
+export default function PostsContainer({ level }: Props) {
   const { posts, isFetching } = usePosts();
 
   if (!posts.length && !isFetching) {
@@ -15,7 +17,7 @@ export default function PostsContainer() {
   return (
     <div className="grid grid-cols-4 gap-3 p-8">
       {posts.map((post) => (
-        <PostCard key={post.id} post={post} level={0} />
+        <PostCard key={post.id} post={post} level={level} />
       ))}
       {isFetching &&
         Array.from({

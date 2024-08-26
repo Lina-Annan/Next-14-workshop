@@ -16,7 +16,7 @@ export default async function Level1PostsPage({ searchParams }: Props) {
   return (
     <PostsProvider>
       <PostsHeader />
-      <PostsContainer />
+      <PostsContainer level={1} />
     </PostsProvider>
   );
 }

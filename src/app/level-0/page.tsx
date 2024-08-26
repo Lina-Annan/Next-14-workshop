@@ -6,7 +6,7 @@ export default function Level0PostsPage() {
   return (
     <PostsProvider>
       <PostsHeader />
-      <PostsContainer />
+      <PostsContainer level={0} />
     </PostsProvider>
   );
 }

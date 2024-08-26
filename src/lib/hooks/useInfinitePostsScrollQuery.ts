@@ -2,16 +2,34 @@ import { useCallback, useState } from "react";
 import useInfiniteScrollQuery from "./useInfiniteScrollQuery";
 import useMemoizedDebounce from "./useMemoizedDebounce";
 import type { Post, Tag } from "@prisma/client";
+import { useSearchParams, useRouter } from "next/navigation";
 
 export const GET_POSTS_LIMIT = 10;
 
 export default function useInfinitePostsScrollQuery() {
   const [searchText, setSearchText] = useState("");
   const debouncedSearchText = useMemoizedDebounce(searchText, 500);
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
-  const handleSetSearchText = useCallback((text: string) => {
-    setSearchText(text);
-  }, []);
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(name, value);
+
+      return params.toString();
+    },
+    [searchParams]
+  );
+
+  const handleSetSearchText = useCallback(
+    (text: string) => {
+      setSearchText(text);
+      const newQueryString = createQueryString("search", text);
+      router.push(`?${newQueryString}`); // Update the URL
+    },
+    [createQueryString, router]
+  );
 
   const { data, isFetching, isPending } = useInfiniteScrollQuery({
     queryKey: ["posts", debouncedSearchText],

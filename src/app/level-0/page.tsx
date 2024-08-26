@@ -8,11 +8,9 @@ import useInfinitePostsScrollQuery from "$/lib/hooks/useInfinitePostsScrollQuery
 export default function Level0PostsPage() {
   const { posts, isFetching, handleSetSearchText } =
     useInfinitePostsScrollQuery();
-
   if (!posts.length && !isFetching) {
     return <div>No data</div>;
   }
-
   return (
     <>
       <Header handleSetSearchText={handleSetSearchText} />

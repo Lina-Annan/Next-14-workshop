@@ -1,17 +1,16 @@
+import NoPosts from "$/lib/components/posts/NoPosts";
 import SinglePost from "$/lib/components/posts/SinglePost";
-import SinglePostSkeleton from "$/lib/components/posts/SinglePostSkeleton";
-import useGetPost from "$/lib/hooks/useGetPost";
 import { getPost, getPosts } from "$/lib/utils/api";
 import { Metadata, ResolvingMetadata } from "next";
 
-type Props = {
+type PageProps = {
   params: {
-    id: string; // Change the type to string
+    id: string;
   };
 };
 
-export async function generateStaticParams({ params: { id } }: Props) {
-  const { posts } = await getPosts({});
+export async function generateStaticParams() {
+  const { posts } = await getPosts({ page: 1 });
 
   return posts.map((post) => ({
     id: post.id.toString(), // Ensure the ID is a string
@@ -19,7 +18,7 @@ export async function generateStaticParams({ params: { id } }: Props) {
 }
 
 export async function generateMetadata(
-  { params: { id } }: Props,
+  { params: { id } }: PageProps,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   // fetch data
@@ -32,11 +31,15 @@ export async function generateMetadata(
   // optionally access and extend (rather than replace) parent metadata
   const previousImages = (await parent).openGraph?.images || [];
 
+  const description = `${post.content.slice(0, 160)}...`;
+
   return {
     title: post.title,
+    description,
+    robots: "index, follow",
     openGraph: {
       title: post.title, // Title of the post
-      description: post.content, // Description of the post
+      description, // Description of the post
       images: [post.imageSrc, ...previousImages], // Image URL(s)
       url: `http://localhost:3000/level-1/${id}`, // URL of the post
       type: "article", // Type of the content
@@ -44,11 +47,11 @@ export async function generateMetadata(
   };
 }
 
-export default async function PostPage1({ params: { id } }: Props) {
+export default async function PostPage1({ params: { id } }: PageProps) {
   const postId = parseInt(id);
   const post = await getPost(postId);
   if (!post) {
-    return <div>No Data</div>;
+    return <NoPosts />;
   }
   // JSON-LD data for a blog post (Article)
   const jsonLd = {

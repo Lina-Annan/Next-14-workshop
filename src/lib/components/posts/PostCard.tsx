@@ -26,7 +26,10 @@ export const PostCard = ({ post, level }: Props) => {
       </h2>
       <div className="space-x-2">
         {post.tags.map((tag) => (
-          <span className="text-green-700 capitalize bg-green-400/15 rounded-xl py-1 px-2 mb-1 w-fit text-xs ">
+          <span
+            key={tag.id}
+            className="text-green-700 capitalize bg-green-400/15 rounded-xl py-1 px-2 mb-1 w-fit text-xs "
+          >
             {tag.name}
           </span>
         ))}

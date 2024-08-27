@@ -11,8 +11,6 @@ export async function GET(
   _request: NextRequest,
   { params }: { params: Params }
 ) {
-  console.log("dowandiaw");
-
   const id = params.id;
   const parsedId = parseInt(id);
 

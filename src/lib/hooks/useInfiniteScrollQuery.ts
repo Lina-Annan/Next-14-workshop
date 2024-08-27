@@ -25,7 +25,7 @@ type UseInfiniteScrollQueryOptions<
   disableScroll?: boolean;
 };
 
-export default function <
+export default function useInfiniteScrollQuery<
   TQueryFnData = unknown,
   TError = DefaultError,
   TData = InfiniteData<TQueryFnData>,
@@ -41,17 +41,13 @@ export default function <
   >
 ) {
   const infiniteQueryResult = useInfiniteQuery(options);
+  const { hasNextPage, fetchNextPage } = infiniteQueryResult;
 
   useEffect(() => {
     let isFetching = false;
 
     const onScrollHelper = async () => {
-      if (
-        options.disableScroll ||
-        isFetching ||
-        !infiniteQueryResult.hasNextPage
-      )
-        return;
+      if (options.disableScroll || isFetching || !hasNextPage) return;
 
       const { scrollHeight, scrollTop, clientHeight } =
         document.documentElement;
@@ -59,7 +55,7 @@ export default function <
 
       if (scrollHeight - scrollTop - clientHeight < threshold) {
         isFetching = true;
-        await infiniteQueryResult.fetchNextPage();
+        await fetchNextPage();
         isFetching = false;
       }
     };
@@ -75,12 +71,7 @@ export default function <
       document.removeEventListener("scroll", onScroll);
       document.removeEventListener("touchmove", onScroll);
     };
-  }, [
-    options.disableScroll,
-    options.threshold,
-    infiniteQueryResult.hasNextPage,
-    infiniteQueryResult.fetchNextPage,
-  ]);
+  }, [options.disableScroll, options.threshold, hasNextPage, fetchNextPage]);
 
   return infiniteQueryResult;
 }

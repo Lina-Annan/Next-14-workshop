@@ -1,6 +1,6 @@
+import addPost from "$/lib/actions/add-post";
 import NumberInput from "$/lib/components/common/Input/NumberInput";
 import TextInput from "$/lib/components/common/Input/TextInput";
-import addPost from "./AddPost";
 
 export default function CreatePostForm() {
   return (
@@ -14,7 +14,7 @@ export default function CreatePostForm() {
           type="submit"
           className="w-full py-2 mt-5 text-white bg-blue-400 rounded-lg hover:bg-blue-600"
         >
-          submit
+          Submit
         </button>
       </form>
     </div>

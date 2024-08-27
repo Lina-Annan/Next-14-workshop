@@ -9,6 +9,8 @@ type PageProps = {
 };
 
 export async function generateStaticParams() {
+  return [];
+
   const { posts } = await getPosts({ page: 1 });
 
   return posts.map((post) => ({

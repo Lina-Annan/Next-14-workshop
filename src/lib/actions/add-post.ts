@@ -4,7 +4,7 @@ import prisma from "$/lib/clients/prisma";
 import { faker } from "@faker-js/faker";
 import { revalidatePath } from "next/cache";
 
-const addPost = async (formData: FormData) => {
+export default async function addPost(formData: FormData) {
   const tags = await prisma.tag.findMany({ select: { id: true } });
 
   const shuffledTags = faker.helpers.shuffle(tags);
@@ -20,7 +20,10 @@ const addPost = async (formData: FormData) => {
     },
   });
 
+  // you will probably revalidate a single path here
   revalidatePath("/level-1");
-};
-
-export default addPost;
+  revalidatePath("/level-2");
+  revalidatePath("/level-3");
+  revalidatePath("/level-4");
+  revalidatePath("/level-5");
+}

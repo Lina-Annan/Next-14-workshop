@@ -1,7 +1,13 @@
 "use client";
 
 import { Post, Tag } from "@prisma/client";
-import { createContext, PropsWithChildren, useContext, useMemo } from "react";
+import {
+  createContext,
+  PropsWithChildren,
+  Suspense,
+  useContext,
+  useMemo,
+} from "react";
 import useInfiniteScrollQuery from "../hooks/useInfiniteScrollQuery";
 import useMemoizedDebounce from "../hooks/useMemoizedDebounce";
 import useEnhancedSearchParams from "../hooks/useEnhancedSearchParams";
@@ -21,6 +27,19 @@ type Props = {
 };
 
 export default function PostsProvider({
+  initialData,
+  children,
+}: PropsWithChildren<Props>) {
+  return (
+    <Suspense>
+      <PostsProviderInner initialData={initialData}>
+        {children}
+      </PostsProviderInner>
+    </Suspense>
+  );
+}
+
+function PostsProviderInner({
   initialData,
   children,
 }: PropsWithChildren<Props>) {

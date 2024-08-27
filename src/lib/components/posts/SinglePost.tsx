@@ -8,7 +8,7 @@ type Props = {
 
 export default function SinglePost({ post }: Props) {
   return (
-    <div className="max-w-[800px] p-8 mx-auto space-y-6">
+    <article className="max-w-[800px] p-8 mx-auto space-y-6">
       <img
         src={post.imageSrc}
         className="w-full aspect-video object-cover rounded-2xl"
@@ -25,6 +25,6 @@ export default function SinglePost({ post }: Props) {
       </div>
       <h1 className="font-semibold text-3xl">{post.title}</h1>
       <p className="text-xl">{post.content}</p>
-    </div>
+    </article>
   );
 }

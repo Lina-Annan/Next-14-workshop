@@ -19,6 +19,7 @@ export async function generateStaticParams() {
 export default async function PostPage1({ params: { id } }: PageProps) {
   const postId = parseInt(id);
   const post = await getPost(postId);
+  await new Promise((resolve) => setTimeout(resolve, 3000));
 
   if (!post) {
     return <NoPosts />;

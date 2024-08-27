@@ -17,12 +17,11 @@ export type PostsContextType = {
 const PostsContext = createContext<PostsContextType | undefined>(undefined);
 
 type Props = {
-  initialPosts?: (Post & { tags: Tag[] })[];
-  initialPages?: number[];
+  initialData?: { posts: (Post & { tags: Tag[] })[]; total: number };
 };
 
 export default function PostsProvider({
-  initialPosts,
+  initialData,
   children,
 }: PropsWithChildren<Props>) {
   const [{ search = "" }, setEnhancedSearchParams] = useEnhancedSearchParams<{
@@ -42,6 +41,12 @@ export default function PostsProvider({
         return newSkip;
       }
     },
+    initialData: initialData
+      ? {
+          pages: [initialData],
+          pageParams: [Math.ceil(initialData.total / GET_POSTS_LIMIT)],
+        }
+      : undefined,
   });
 
   const posts = useMemo(

@@ -11,10 +11,10 @@ export default async function Level1PostsPage({ searchParams }: Props) {
   let search = searchParams?.search;
   if (typeof search !== "string") search = "";
 
-  const posts = await getPosts({ search, page: 0 });
+  const postsData = await getPosts({ search, page: 0 });
 
   return (
-    <PostsProvider>
+    <PostsProvider initialData={postsData}>
       <PostsHeader />
       <PostsContainer level={1} />
     </PostsProvider>

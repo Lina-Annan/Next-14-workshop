@@ -7,6 +7,9 @@ type Props = {
   searchParams?: { [key: string]: string | string[] | undefined };
 };
 
+export const fetchCache = "force-cache";
+export const revalidate = 300;
+
 export default async function Level1PostsPage({ searchParams }: Props) {
   let search = searchParams?.search;
   if (typeof search !== "string") search = "";

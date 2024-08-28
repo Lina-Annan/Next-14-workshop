@@ -19,11 +19,6 @@ export default async function addPost(formData: FormData) {
       },
     },
   });
-
-  // you will probably revalidate a single path here
-  revalidatePath("/level-1");
-  revalidatePath("/level-2");
-  revalidatePath("/level-3");
   revalidatePath("/level-4");
   revalidatePath("/level-5");
 }

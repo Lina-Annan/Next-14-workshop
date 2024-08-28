@@ -9,7 +9,7 @@ export default function NewPostModal() {
 
   return (
     <Modal title="Add a new post" isOpen onModalClose={router.back}>
-      <CreatePostForm />
+      <CreatePostForm onPostCreated={router.back} />
     </Modal>
   );
 }

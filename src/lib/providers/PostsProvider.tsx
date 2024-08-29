@@ -1,6 +1,5 @@
 "use client";
 
-import { Post, Tag } from "@prisma/client";
 import {
   createContext,
   PropsWithChildren,
@@ -8,13 +7,13 @@ import {
   useContext,
   useMemo,
 } from "react";
+import useEnhancedSearchParams from "../hooks/useEnhancedSearchParams";
 import useInfiniteScrollQuery from "../hooks/useInfiniteScrollQuery";
 import useMemoizedDebounce from "../hooks/useMemoizedDebounce";
-import useEnhancedSearchParams from "../hooks/useEnhancedSearchParams";
-import { GET_POSTS_LIMIT, getPosts } from "../utils/api";
+import { getPosts, PostWithTags } from "../utils/api";
 
 export type PostsContextType = {
-  posts: (Post & { tags: Tag[] })[];
+  posts: PostWithTags[];
   isFetching: boolean;
   search: string;
   handleSetSearch: (text: string) => void;
@@ -23,7 +22,7 @@ export type PostsContextType = {
 const PostsContext = createContext<PostsContextType | undefined>(undefined);
 
 type Props = {
-  initialData?: { posts: (Post & { tags: Tag[] })[]; total: number };
+  initialData?: { posts: PostWithTags[]; total: number };
 };
 
 export default function PostsProvider({
@@ -50,20 +49,26 @@ function PostsProviderInner({
   const debouncedSearch = useMemoizedDebounce(search || "", 500);
 
   const { data, isFetching } = useInfiniteScrollQuery({
-    queryKey: ["posts", debouncedSearch],
+    queryKey: ["posts", { search: debouncedSearch }],
     queryFn: async ({ pageParam }) =>
       getPosts({ search: debouncedSearch, page: pageParam }),
     initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) => {
-      const newSkip = allPages.length * GET_POSTS_LIMIT;
-      if (newSkip < lastPage.total) {
-        return newSkip;
+      const totalPostsCount = lastPage.total;
+      const currentPostsCount = allPages.reduce(
+        (acc, page) => acc + page.posts.length,
+        0
+      );
+      const newPage = allPages.length;
+
+      if (totalPostsCount > currentPostsCount) {
+        return newPage;
       }
     },
     initialData: initialData
       ? {
           pages: [initialData],
-          pageParams: [Math.ceil(initialData.total / GET_POSTS_LIMIT)],
+          pageParams: [0],
         }
       : undefined,
   });

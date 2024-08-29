@@ -7,8 +7,11 @@ export async function GET(request: NextRequest) {
   const url = new URL(request.url);
   const searchParams = Object.fromEntries(url.searchParams.entries());
 
-  const limit = parseInt(searchParams.limit) || 10;
-  const skip = parseInt(searchParams.skip) || 0;
+  let limit = parseInt(searchParams.limit);
+  let skip = parseInt(searchParams.skip);
+
+  if (Number.isNaN(limit)) limit = 10;
+  if (Number.isNaN(skip)) skip = 0;
 
   const findManyArgs = {
     skip,

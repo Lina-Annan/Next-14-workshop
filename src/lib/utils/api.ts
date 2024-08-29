@@ -3,6 +3,8 @@ import { Post, Tag } from "@prisma/client";
 export const BASE_API_URL = "http://localhost:3000";
 export const GET_POSTS_LIMIT = 10;
 
+export type PostWithTags = Post & { tags: Tag[] };
+
 export async function getPosts({
   search,
   page,
@@ -12,7 +14,7 @@ export async function getPosts({
 }) {
   const searchParams = new URLSearchParams();
   searchParams.append("limit", GET_POSTS_LIMIT.toString());
-  searchParams.append("skip", (page ?? 0).toString());
+  searchParams.append("skip", ((page ?? 0) * GET_POSTS_LIMIT).toString());
 
   if (search) {
     searchParams.append("search", search);
@@ -22,7 +24,7 @@ export async function getPosts({
 
   const res = await fetch(url);
   const data = (await res.json()) as {
-    posts: (Post & { tags: Tag[] })[];
+    posts: PostWithTags[];
     total: number;
   };
 

@@ -1,7 +1,7 @@
 import { Post, Tag } from "@prisma/client";
 
 export const BASE_API_URL = "http://localhost:3000";
-export const GET_POSTS_LIMIT = 10;
+export const GET_POSTS_LIMIT = 12;
 
 export type PostWithTags = Post & { tags: Tag[] };
 

@@ -1,3 +1,4 @@
+import prisma from "$/lib/clients/prisma";
 import NoPosts from "$/lib/components/posts/NoPosts";
 import SinglePost from "$/lib/components/posts/SinglePost";
 import { getPost, getPosts } from "$/lib/utils/api";
@@ -10,13 +11,13 @@ type PageProps = {
 };
 
 export async function generateStaticParams() {
-  return [];
+  const posts = await prisma.post.findMany({
+    select: {
+      id: true,
+    },
+  });
 
-  const { posts } = await getPosts({ page: 1 });
-
-  return posts.map((post) => ({
-    id: post.id.toString(), // Ensure the ID is a string
-  }));
+  return posts.map(({ id }) => ({ params: { id: id.toString() } }));
 }
 
 export async function generateMetadata(
@@ -43,13 +44,13 @@ export async function generateMetadata(
       title: post.title, // Title of the post
       description, // Description of the post
       images: [post.imageSrc, ...previousImages], // Image URL(s)
-      url: `http://localhost:3000/level-1/${id}`, // URL of the post
+      url: `http://localhost:3000/level-4/${id}`, // URL of the post
       type: "article", // Type of the content
     },
   };
 }
 
-export default async function PostPage1({ params: { id } }: PageProps) {
+export default async function PostPage4({ params: { id } }: PageProps) {
   const postId = parseInt(id);
   const post = await getPost(postId);
   if (!post) {

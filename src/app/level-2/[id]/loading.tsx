@@ -1,7 +1,5 @@
 import SinglePostSkeleton from "$/lib/components/posts/SinglePostSkeleton";
 
-const Loading = () => {
+export default function SinglePost2Loading() {
   return <SinglePostSkeleton />;
-};
-
-export default Loading;
+}

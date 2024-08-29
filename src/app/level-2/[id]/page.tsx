@@ -1,6 +1,7 @@
+import prisma from "$/lib/clients/prisma";
 import NoPosts from "$/lib/components/posts/NoPosts";
 import SinglePost from "$/lib/components/posts/SinglePost";
-import { getPost, getPosts } from "$/lib/utils/api";
+import { getPost } from "$/lib/utils/api";
 
 type PageProps = {
   params: {
@@ -9,16 +10,16 @@ type PageProps = {
 };
 
 export async function generateStaticParams() {
-  return [];
+  const posts = await prisma.post.findMany({
+    select: {
+      id: true,
+    },
+  });
 
-  const { posts } = await getPosts({ page: 1 });
-
-  return posts.map((post) => ({
-    id: post.id.toString(), // Ensure the ID is a string
-  }));
+  return posts.map(({ id }) => ({ params: { id: id.toString() } }));
 }
 
-export default async function PostPage1({ params: { id } }: PageProps) {
+export default async function PostPage2({ params: { id } }: PageProps) {
   const postId = parseInt(id);
   const post = await getPost(postId);
   await new Promise((resolve) => setTimeout(resolve, 3000));

@@ -1,12 +1,11 @@
 import { Metadata } from "next";
 import { PropsWithChildren } from "react";
 
-type Props = {};
-
 export const metadata: Metadata = {
-  title: "Layout 1",
-  description: "Layout 1 description",
+  title: "Posts 4",
+  description: "Posts 4 description",
 };
-export default function Layout1({ children }: PropsWithChildren) {
+
+export default function Layout4({ children }: PropsWithChildren) {
   return <>{children}</>;
 }

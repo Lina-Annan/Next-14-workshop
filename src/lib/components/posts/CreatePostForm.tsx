@@ -16,18 +16,9 @@ export default function CreatePostForm({ onPostCreated }: Props) {
     await addPost(formData);
     onPostCreated?.();
 
-    const r1 = queryClient.getQueriesData({
-      predicate: (query) => query.queryKey[0] === "posts",
-    });
-
     await queryClient.invalidateQueries({
       predicate: (query) => query.queryKey[0] === "posts",
     });
-    const r2 = queryClient.getQueriesData({
-      predicate: (query) => query.queryKey[0] === "posts",
-    });
-
-    console.log(r1, r2);
   };
 
   return (

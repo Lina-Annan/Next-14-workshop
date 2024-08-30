@@ -54,7 +54,7 @@ function Navigation() {
   const nextLevel = parseInt(currentLevel) + 1;
 
   const prevLevelPath = prevLevel >= 0 ? `/level-${prevLevel}` : "";
-  const nextLevelPath = nextLevel <= 6 ? `/level-${nextLevel}` : "";
+  const nextLevelPath = nextLevel <= 5 ? `/level-${nextLevel}` : "";
 
   return (
     <nav className="flex items-center gap-10">

@@ -1,11 +1,30 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/create-next-app).
+This is a [Next.js](https://nextjs.org) project aimed to showcase the features of next@13 and the react on the server new architecture.
 
 ## Getting Started
 
-First, run the development server:
+First, install the dependencies:
 
 ```bash
-npm run dev
+npm install
+# or
+yarn install
+# or
+pnpm install
+# or
+bun install
+```
+
+Then, make sure to add the environment variables for the database and generate the database schema with Prisma:
+
+```bash
+echo "DATABASE_URL="file:./dev.db"" >> .env
+npx prisma generate
+```
+
+Now you can run the development server:
+
+```bash
+npm dev
 # or
 yarn dev
 # or
@@ -16,21 +35,14 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Some helpful resources to get started:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load Inter, a custom Google Font.
+[`Rendering`](https://nextjs.org/docs/app/building-your-application/rendering): Server-side rendering, client components, and more.
 
-## Learn More
+[`Routing`](https://nextjs.org/docs/app/building-your-application/routing): Learn how to create pages and layouts and navigate between them.
 
-To learn more about Next.js, take a look at the following resources:
+[`SEO`](https://nextjs.org/docs/app/api-reference/functions/generate-metadata): Optimize your application for search engines.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+[`Server Actions`](https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations): No more API routes and POST requests.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+[`RQ Advanced SSR`](https://tanstack.com/query/latest/docs/framework/react/guides/advanced-ssr): Learn how to use React Query with Next.js SSR.

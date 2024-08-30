@@ -30,13 +30,26 @@ export async function getPosts({
 
   return data;
 }
+
 export function getPost(id: number) {
   const url = `${BASE_API_URL}/api/posts/${id}`;
-  console.log("Fetching post from URL:", url);
   return fetch(url).then((res) => {
     if (!res.ok) {
       throw new Error(`Failed to fetch post with id ${id}: ${res.statusText}`);
     }
     return res.json();
   }) as Promise<Post & { tags: Tag[] }>;
+}
+
+export function artificialDelay<T>(
+  promise: Promise<T>,
+  exactDuration?: number
+) {
+  const ms = exactDuration ?? Math.floor(Math.random() * 500);
+
+  return new Promise<T>((resolve) => {
+    setTimeout(() => {
+      promise.then(resolve);
+    }, ms);
+  });
 }
